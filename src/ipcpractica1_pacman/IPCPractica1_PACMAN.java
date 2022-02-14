@@ -18,13 +18,18 @@ public class IPCPractica1_PACMAN {
     /**
      * @param args the command line arguments
      */
-   String nombre,trampa,icono;
-   int tamaño1,tamaño2,comida,paredes,columna,fila,fila6;
+   String nombre,trampa,icono,fila6,ic;
+   
+   int tamaño1,tamaño2,comida,paredes,columna,fila,iconos;
+   
+   int f=0,c=0;
+   char[][]matriz;
     Scanner sn = new Scanner(System.in);
     Random random=new Random();
     Scanner da=new Scanner(System.in);
+           boolean salir = false;
     public static void main(String[] args) {
-      IPCPractica1 practica=new IPCPractica1();
+      IPCPractica1_PACMAN practica=new IPCPractica1_PACMAN();
         practica.Menú();
        // practica.matriz();
     }
@@ -35,23 +40,59 @@ public class IPCPractica1_PACMAN {
         System.out.println("Indique tamaño de tablero");
         tamaño1=Integer.parseInt(da.next());
         tamaño2=Integer.parseInt(da.next());
-        System.out.println("Indique cantidad de comida");
-         comida= Integer.parseInt(da.next());
-        System.out.println("Indique cantidad de paredes");
-          paredes=Integer.parseInt(da.next());
+//        System.out.println("Indique cantidad de comida");
+//         comida= Integer.parseInt(da.next());
+//        System.out.println("Indique cantidad de paredes");
+//          paredes=Integer.parseInt(da.next());
 //        System.out.println("Indique cantidad de trampas");
 //          trampa=da.next();
 //        System.out.println("Elija icono");
 //          icono=da.next();
-        System.out.print("Jugador"+" "+nombre+"\n");
-         matriz(tamaño1,tamaño2,comida,paredes);
-         
+iconos();
+        System.out.print("Seleccione un ICONO"+" "+nombre+"\n");
+        iconos=Integer.parseInt(da.next());
+         switch (iconos) {
+                    case 1:
+                       ic="¶";
+                        break;
+                    case 2:
+                         ic="¥";
+                        break;
+                    case 3:
+                        ic="¤";
+                        break;
+                    case 4:
+                         ic="♥";
+                        break;
+                    case 5:
+                        ic="♦";
+                        break;
+                        case 6:
+                       ic="♣";
+                        break;
+                    case 7:
+                         ic="♠";
+                        break;
+                    case 8:
+                       ic="†";
+                        break;
+                        case 9:
+                         ic="֎";
+                        break;
+                    case 10:
+                        ic="֏";
+                        break;
+                    default:
+                        System.out.println("No ha seleccionado ningún icono disponible");
+
+                }
+         matriz(tamaño1,tamaño2,comida,paredes,nombre);
 
           
     }
      public  void Menú(){
          
-       boolean salir = false;
+
        int opcion; //Guardaremos la opcion del usuario
         
        while(!salir){
@@ -85,12 +126,9 @@ public class IPCPractica1_PACMAN {
                      
         }
      }
-     public void matriz(int a,int b,int comid,int pared){   
+     public void matriz(int a,int b,int comid,int pared,String nombre){   
          char[]simbolos={'@','#','?','X',' '};
-         int f,c=0,co=0,pa=0;
-         int posx=0,posy=0;
-         char jugador;
-char[][]matriz=new char[a][b];
+matriz=new char[a][b];
 
 for( f=0;f<a ;f++){
     System.out.print("|");
@@ -101,71 +139,121 @@ for( f=0;f<a ;f++){
          System.out.print("|");
          System.out.println();  
 }
+
+ 
     System.out.println("Indicar Movimiento");
         columna=Integer.parseInt(da.next());
         fila=Integer.parseInt(da.next());
         for( f=0;f<a ;f++){
     System.out.print("|");
     for( c=0;c<b;c++){
-        matriz[columna][fila]='W';
+        matriz[columna][fila]=ic.charAt(0);
         System.out.print(" " +matriz[f][c]); 
     } 
          System.out.print("|");
          System.out.println();    
     }
-
-          String Respuesta="";
-          do{
-            System.out.println("Posición");
-        fila6=Integer.parseInt(da.next());
-        
-          if(fila6==6||fila6=='d'){
-          for( f=0;f<a;f++){
-              System.out.print("|");
-              for( c=0;c<b;c++){
-                matriz[f][c+1]='W';
-                  System.out.print(" " +matriz[f][c]);  
-              }
-                System.out.print("|");
-         System.out.println();    
-          }
-          }if(fila6==4||fila6=='a'){
-          for( f=0;f<a;f++){
-              System.out.print("|");
-              for( c=0;c<b;c++){
-                matriz[f][c-1]='W';
-                
-                  System.out.print(" " +matriz[f][c]);  
-              }
-                System.out.print("|");
-         System.out.println();    
-          }
-          }
-          if(fila6==8||fila6=='w'){
-          for( f=0;f<matriz.length;f++){
-              System.out.print("|");
-              for( c=0;c<matriz.length;c++){
-                matriz[columna-1][fila]='W';
-                  System.out.print(" " +matriz[f][c]);  
-              }
-                System.out.print("|");
-         System.out.println();    
-          }
-          }if(fila6==2||fila6=='x'){
-          for( f=0;f<matriz.length;f++){
-              System.out.print("|");
-              for( c=0;c<matriz.length;c++){
-                matriz[columna+1][fila]='W';
-                  System.out.print(" " +matriz[f][c]);  
-              }
-                System.out.print("|");
-         System.out.println();    
-          }
- 
-
-           
-          }
-          }while(true);
+            movimiento(matriz,nombre);      
      }
-    
+     public void movimiento(char [][]matriz,String nombre){
+                   String Respuesta="";
+              int d=0,iz=0;
+          int puntos=0;
+          int vida=3;
+          char com='@';
+   
+ do{
+        System.out.println("Posición");
+        fila6=da.next();
+        matriz[fila+iz][columna+d]=' ';
+          if(fila6.equalsIgnoreCase("6")||fila6.equalsIgnoreCase("d")){
+              if(matriz[fila+iz][columna+d+1]=='@'||matriz[fila+iz][columna+d+1]=='?'||matriz[fila+iz][columna+d+1]=='X'||matriz[fila+iz][columna+d+1]==' '){
+              if(matriz[fila+iz][columna+d+1]=='@'){
+                    puntos=puntos+5;
+                }if(matriz[fila+iz][columna+d+1]=='?'){
+                    puntos=puntos+10;
+                }if(matriz[fila+iz][columna+d+1]=='X'){
+                    vida=vida-1;
+                }
+                 matriz[fila+iz][columna+d+1]=ic.charAt(0);
+                  d++;
+              }else if(matriz[fila+iz][columna+d+1]=='#'){
+                  System.out.print("No puede avanzar");
+
+              }
+               
+  
+          }
+          if(fila6.equalsIgnoreCase("4")||fila6.equalsIgnoreCase("a")){
+                if(matriz[fila+iz][columna+d-1]=='@'||matriz[fila+iz][columna+d-1]=='?'||matriz[fila+iz][columna+d-1]=='X'||matriz[fila+iz][columna+d-1]==' '){
+              if(matriz[fila+iz][columna+d-1]=='@'){
+                    puntos=puntos+5;
+                }if(matriz[fila+iz][columna+d-1]=='?'){
+                    puntos=puntos+10;
+                }if(matriz[fila+iz][columna+d-1]=='X'){
+                    vida=vida-1;
+                }
+            matriz[fila+iz][columna+d-1]=ic.charAt(0);
+            d--;
+                }else if(matriz[fila+iz][columna+d-1]=='#'){
+                  System.out.print("No puede avanzar");
+                   }
+              
+          }
+            
+          if(fila6.equalsIgnoreCase("8")||fila6.equalsIgnoreCase("w")){
+               if(matriz[fila+iz-1][columna+d]=='@'||matriz[fila+iz-1][columna+d]=='?'||matriz[fila+iz-1][columna+d]=='X'||matriz[fila+iz-1][columna+d]==' '){
+              if(matriz[fila+iz-1][columna+d]=='@'){
+                    puntos=puntos+5;
+                }if(matriz[fila+iz-1][columna+d]=='?'){
+                    puntos=puntos+10;
+                }if(matriz[fila+iz-1][columna+d]=='X'){
+                    vida=vida-1;
+                }
+            matriz[fila+iz-1][columna+d]=ic.charAt(0);
+            iz--;
+               }else if(matriz[fila+iz-1][columna+d]=='#'){
+                  System.out.print("No puede avanzar");
+              }
+            
+          }
+          if(fila6.equalsIgnoreCase("2")||fila6.equalsIgnoreCase("x")){
+               if(matriz[columna+iz+1][fila+d]=='@'||matriz[columna+iz+1][fila+d]=='?'||matriz[columna+iz+1][fila+d]=='X'||matriz[columna+iz+1][fila+d]==' '){
+              if(matriz[columna+iz+1][fila+d]=='@'){
+                    puntos=puntos+5;
+                }if(matriz[columna+iz+1][fila+d]=='?'){
+                    puntos=puntos+10;
+                }if(matriz[columna+iz+1][fila+d]=='X'){
+                   vida=vida-1;
+                }
+              matriz[columna+iz+1][fila+d]=ic.charAt(0);
+              iz++;
+               }else if(matriz[fila+iz+1][columna+d]=='#'){
+                  System.out.print("No puede avanzar");
+              }
+              
+                      }
+           if(fila6.equalsIgnoreCase("m")){
+               System.out.println("PAUSA");
+           }
+
+             System.out.println("Jugador"+" "+nombre+" "+"Puntos"+" "+puntos+" "+"Vidas"+" "+vida);
+           for( f=0;f<matriz.length;f++){
+              System.out.print("|");
+              for( c=0;c<matriz[0].length;c++){
+                  System.out.print(" " +matriz[f][c]);  
+              }
+                System.out.print("|");
+         System.out.println();    
+          } 
+          
+           }while(vida>=0);
+          
+  System.out.println("Jugador"+" "+nombre+" "+"Vidas"+" "+vida+" "+"YA NO PUEDE SEGUIR JUGANDO");
+     }
+ public void iconos(){
+     System.out.println("-----------");
+          System.out.println("1.---¶"+"\n"+"2.---¥"+"\n"+"3.---¤"+"\n"+"4.---♥"+"\n"+"5.---♦"+"\n"+"6.---♣"+"\n"+"7.---♠"+"\n"+"8.---†"+"\n"+"9.---֎"+"\n"+"10.---֏");
+System.out.println("-----------");
+ }
 }
